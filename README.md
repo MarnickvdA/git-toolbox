@@ -2,6 +2,8 @@
 
 Collection of useful git commands and tricks. Always good to have them ready.
 
+`Disclaimer` : The following commands have only been tested with MacOS using the Z shell (zsh).
+
 ## Tips
 
 ### Enabling Rerere
@@ -43,34 +45,59 @@ git config --global alias.oopsie '!f() {
 
 `CAUTION` Only use this one on your own branches, not main or master or another collaborative branch where people have also 'their' version of the branch. Or if you think you know your shit, do it on the default branch and let the world burn!
 
-### `commitpush` Commit w/ message and push it!
-
-`git config --local alias.commitpush '!f() { git commit -am $1; git push; }; f'`
-
 ### `new` Fast branch creation
 
-`git config --global alias.new 'switch -c'`
+```sh
+git config --global alias.new 'switch -c'
+```
 
-Yes, I'm this lazy.
+**Description**: Yes, I'm this lazy.
 
 ### `del` Fast branch deletion
 
-`git config --global alias.del '!f() { git switch -; git branch -D $1; }; f'`
+```sh
+git config --global alias.del '!f() { 
+  git switch -; 
+  git branch -D $1; 
+}; f'
+```
+
+**Description**: Yes, I'm this lazy.
 
 ### Fast branch pruning
 
-`TODO`
+```sh
+git config --global alias.prune-branches '!f() { 
+  git switch main && git fetch -p && 
+  for branch in $(git branch -vv | grep ": gone]" | awk '"'"'{print $1}'"'"'); do 
+    echo "Deleting branch $branch"; 
+    git branch -d "$branch"; 
+  done; 
+}; f'
+```
 
 ### `graph` Show Git Repository Graph
 
-`git config --global alias.graph 'log --graph --oneline --decorate --branches --tags'`
+```sh
+git config --global alias.graph 'log --graph --oneline --decorate --branches --tags'
+```
 
 **Description**: Shows the history in graph representation of this git project.
 
 ### `stats` Get Git Stats by Author Name
 
 ```
-git config --global alias.stats '!f() { git log --author="$1" --pretty=tformat: --numstat | awk "{ add += \$1; subs += \$2; loc += \$1 - \$2 } END { printf \"added lines: %s, removed lines: %s, total lines: %s\n\", add, subs, loc }" -; }; f'
+git config --global alias.stats '!f() { 
+  git log --author="$1" --pretty=tformat: --numstat | 
+  awk "{ 
+    add += \$1; 
+    subs += \$2; 
+    loc += \$1 - \$2 
+  } 
+  END { 
+    printf \"added lines: %s, removed lines: %s, total lines: %s\n\", add, subs, loc 
+  }" -; 
+}; f'
 ```
 
 **Description**: Get a short and sweet overview of the amount of lines you've added to the git project that you're currently in. Command can be used as `git stats John Doe`, or any other name for that matter.
@@ -78,7 +105,16 @@ git config --global alias.stats '!f() { git log --author="$1" --pretty=tformat: 
 
 ### `fb` Find branch by name
 
-`git config --local alias.fb '!f() { branches=$(git branch --list | grep "$1"); if [ -z "$branches" ]; then echo "No results found"; else echo "$branches"; fi; }; f'`
+```sh
+git config --global alias.find-branch '!f() { 
+  branches=$(git branch --list | grep "$1"); 
+  if [ -z "$branches" ]; then 
+    echo "No results found"; 
+  else 
+    echo "$branches"; 
+  fi; 
+}; f'
+```
 
 **Description**: In longer running projects with a lot of different branches being worked on simultaneously, it's sometimes quicker to figure out the name of a specific branch than to go back to the project management tool of choice to find what name someone gave to it. If you know a part of the name, that should be enough.
 
