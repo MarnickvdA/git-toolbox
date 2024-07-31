@@ -15,6 +15,17 @@ Collection of useful git commands and tricks. Always good to have them ready.
 
 ## Commands
 
+I've gathered the following aliases that combine some git commands which I find useful. You can see the more detailed description in each of the subsections below. Copy-paste the alias command in your terminal and you should be ready to go :)
+
+- `git oopsie`
+- `git new $branch-name`
+- `git del $branch-name`
+- `git prune-branches`
+- `git graph`
+- `git stats $author-name`
+- `git find-branch $search-string`
+
+
 ### Squashing commits on branch
 
 `git rebase -i HEAD~N`, where `N` is the amount of commits that need to be rebased.
@@ -64,7 +75,7 @@ git config --global alias.del '!f() {
 
 **Description**: Yes, I'm this lazy.
 
-### Fast branch pruning
+### `prune-branches` Fast branch pruning
 
 ```sh
 git config --global alias.prune-branches '!f() { 
@@ -103,7 +114,7 @@ git config --global alias.stats '!f() {
 **Description**: Get a short and sweet overview of the amount of lines you've added to the git project that you're currently in. Command can be used as `git stats John Doe`, or any other name for that matter.
 
 
-### `fb` Find branch by name
+### `find-branch` Find branch by name
 
 ```sh
 git config --global alias.find-branch '!f() { 
